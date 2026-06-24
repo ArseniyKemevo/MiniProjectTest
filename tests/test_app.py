@@ -92,3 +92,12 @@ def test_perform_conversion_missing_rate(test_db):
     """Проверка поведения системы при отсутствии курса в БД."""
     with pytest.raises(ValueError, match="Курс обмена из USD в EUR не найден"):
         converter.perform_conversion("USD", "EUR", "100", test_db)
+
+def test_validate_amount_with_comma_and_spaces():
+    """Тест исправления бага #8 и #9: парсинг сумм с запятыми и пробелами."""
+    assert converter.validate_amount("1 000,50") == 1000.50
+    assert converter.validate_amount("  500,99  ") == 500.99
+
+def test_validate_rate_with_comma():
+    """Тест исправления бага #8: парсинг курса с запятой."""
+    assert converter.validate_rate("90,45") == 90.45
