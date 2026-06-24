@@ -10,9 +10,12 @@ def validate_currency_code(code):
     return clean_code
 
 def validate_amount(amount):
-    """Проверяет корректность введенной суммы."""
+    """Проверяет корректность введенной суммы. Поддерживает запятые и пробелы."""
+    if amount is None:
+        raise ValueError("Сумма не может быть пустой.")
+    clean_str = str(amount).replace(" ", "").replace(",", ".")
     try:
-        val = float(amount)
+        val = float(clean_str)
     except (ValueError, TypeError):
         raise ValueError("Сумма должна быть числом.")
     if val <= 0:
@@ -20,9 +23,12 @@ def validate_amount(amount):
     return val
 
 def validate_rate(rate):
-    """Проверяет корректность введенного курса."""
+    """Проверяет корректность введенного курса. Поддерживает запятые и пробелы."""
+    if rate is None:
+        raise ValueError("Курс не может быть пустым.")
+    clean_str = str(rate).replace(" ", "").replace(",", ".")
     try:
-        val = float(rate)
+        val = float(clean_str)
     except (ValueError, TypeError):
         raise ValueError("Курс должен быть числом.")
     if val <= 0:
